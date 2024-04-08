@@ -32,6 +32,32 @@ app.MapGet("/api/Animals/{ id:int }", ([FromRoute] int id) =>
     return animal is null ? Results.NotFound($"Animal with id {id} not found") : Results.Ok(animal);
 });
 
+app.MapPost("/api/Animals", ([FromBody] Animal data) =>
+{
+    var contain = DataBase.Animals.Exists(a => a.Id == data.Id);
+    if (contain) return Results.Conflict($"Animal with id {data.Id} already exists");
+    return Results.Created($"/api/Animals/{data.Id}", data);
+});
+
+app.MapPost("/api/Animals", ([FromBody] int id) =>
+{
+    var contain = DataBase.Animals.Exists(a => a.Id == id);
+    var animalList = DataBase.Animals;
+    if (!contain) return Results.Conflict($"Animal with id {id} does not exist");
+
+    for (int i = 0; i < animalList.Count; i++)
+    {
+        if (animalList[i].Id.Equals(id))
+        {
+            animalList.RemoveAt(i);
+        }
+    }
+    
+    return Results.Created($"/api/Animals", animalList);
+});
+
+
+
 //Visits
 app.MapGet("/api/Visits", () =>
     {
@@ -50,6 +76,14 @@ app.MapGet("/api/Visits/{ id:int }", ([FromRoute] int id) =>
     
     return visits.Count != 0 ? Results.NotFound($"Animal with id {id} has no visits") : Results.Ok(visits);
 });
+
+app.MapPost("/api/Visits", ([FromBody] Visit data) =>
+{
+    var contain = DataBase.Visits.Exists(a => a.Id == data.Id);
+    if (contain) return Results.Conflict($"Visit with id {data.Id} already exists");
+    return Results.Created($"/api/Visits/{data.Id}", data);
+});
+
 
 app.Run();
 
