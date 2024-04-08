@@ -19,7 +19,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 //Animals
-app.MapGet("/api/Animals", () =>
+app.MapGet("/api/Animals/getAnimalsList", () =>
     {
         var animals = DataBase.Animals;
         return Results.Ok(animals);
