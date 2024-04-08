@@ -2,20 +2,13 @@
 
 public class Animal
 {
-    private int id{ get; set; }
-    private string name{ get; set; }
-    private string category{ get; set; }
-    private double mass{ get; set; }
-    private string furColor{ get; set; }
+    public int Id{ get; set; }
+    public string Name{ get; set; }
+    public string Category{ get; set; }
+    public double Mass{ get; set; }
+    public string FurColor{ get; set; }
 
-    public Animal(int id, string name, string category, double mass, string furColor)
-    {
-        this.id = id;
-        this.name = name;
-        this.category = category;
-        this.mass = mass;
-        this.furColor = furColor;
-    }
+
     
     
 }
