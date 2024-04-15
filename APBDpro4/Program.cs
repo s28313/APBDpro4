@@ -26,20 +26,20 @@ app.MapGet("/api/Animals/getAnimalsList", () =>
     }
 );
 
-app.MapGet("/api/Animals/{ id:int }", ([FromRoute] int id) =>
+app.MapGet("/api/Animals/{id:int}", ([FromRoute] int id) =>
 {
     var animal = DataBase.Animals.FirstOrDefault(a => a.Id == id);
     return animal is null ? Results.NotFound($"Animal with id {id} not found") : Results.Ok(animal);
 });
 
-app.MapPost("/api/Animals", ([FromBody] Animal data) =>
+app.MapPost("/api/Animals/addAnimal", ([FromBody] Animal data) =>
 {
     var contain = DataBase.Animals.Exists(a => a.Id == data.Id);
     if (contain) return Results.Conflict($"Animal with id {data.Id} already exists");
     return Results.Created($"/api/Animals/{data.Id}", data);
 });
 
-app.MapPost("/api/Animals", ([FromBody] int id) =>
+app.MapPost("/api/Animals/deleteAnimals/{id:int}", ([FromBody] int id) =>
 {
     var contain = DataBase.Animals.Exists(a => a.Id == id);
     var animalList = DataBase.Animals;
@@ -66,7 +66,7 @@ app.MapGet("/api/Visits", () =>
     }
 );
 
-app.MapGet("/api/Visits/{ id:int }", ([FromRoute] int id) =>
+app.MapGet("/api/Visits/{id:int}", ([FromRoute] int id) =>
 {
     List<Visit> visits = new List<Visit>();
     foreach (var VARIABLE in DataBase.Visits)
